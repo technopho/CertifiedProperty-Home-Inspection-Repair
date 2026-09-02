@@ -679,12 +679,12 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
           </div>
           <div class="field">
             <label for="f-zip">Property ZIP code</label>
-            <input type="text" id="f-zip" name="zip" autocomplete="postal-code" inputmode="numeric" placeholder="08097">
+            <input type="text" id="f-zip" name="Property ZIP" autocomplete="postal-code" inputmode="numeric" placeholder="08097">
           </div>
         </div>
         <div class="field">
           <label for="f-what">What needs repair?</label>
-          <select id="f-what" name="repair_type">
+          <select id="f-what" name="Repair Type">
             <option value="" selected>Select from your inspection report</option>
             <option>Structural &amp; foundation</option>
             <option>Drainage &amp; grading</option>
@@ -702,10 +702,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
           <label for="f-msg">Deadline or details <em>(optional)</em></label>
           <textarea id="f-msg" name="message" placeholder="Closing on the 28th, inspector flagged grading and a cracked walkway."></textarea>
         </div>
-        <input type="hidden" name="gclid" class="f-gclid">
-        <input type="hidden" name="utm_source" class="f-utm_source">
-        <input type="hidden" name="utm_campaign" class="f-utm_campaign">
-        <input type="hidden" name="page" value="home-inspection-repairs-landing">
+        <input type="hidden" name="subject" value="New Repair Estimate Request — Certified Property Services">
         <button class="btn btn--orange" type="submit"><span class="btn-txt">Get my free estimate</span>
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
@@ -1144,12 +1141,12 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
           </div>
           <div class="field">
             <label for="f2-zip">Property ZIP code</label>
-            <input type="text" id="f2-zip" name="zip" autocomplete="postal-code" inputmode="numeric" placeholder="08097">
+            <input type="text" id="f2-zip" name="Property ZIP" autocomplete="postal-code" inputmode="numeric" placeholder="08097">
           </div>
         </div>
         <div class="field">
           <label for="f2-what">What needs repair?</label>
-          <select id="f2-what" name="repair_type">
+          <select id="f2-what" name="Repair Type">
             <option value="" selected>Select from your inspection report</option>
             <option>Structural &amp; foundation</option>
             <option>Drainage &amp; grading</option>
@@ -1167,10 +1164,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
           <label for="f2-msg">Deadline or details <em>(optional)</em></label>
           <textarea id="f2-msg" name="message" placeholder="Closing on the 28th, inspector flagged grading and a cracked walkway."></textarea>
         </div>
-        <input type="hidden" name="gclid" class="f-gclid">
-        <input type="hidden" name="utm_source" class="f-utm_source">
-        <input type="hidden" name="utm_campaign" class="f-utm_campaign">
-        <input type="hidden" name="page" value="home-inspection-repairs-landing-bottom">
+        <input type="hidden" name="subject" value="New Repair Estimate Request — Certified Property Services">
         <button class="btn btn--orange" type="submit"><span class="btn-txt">Get my free estimate</span>
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
@@ -1268,14 +1262,17 @@ var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
 (function () {
   'use strict';
 
-  /* Capture ad-click attribution into hidden fields (both forms) */
-  try {
-    var p = new URLSearchParams(location.search);
-    ['gclid', 'utm_source', 'utm_campaign'].forEach(function (k) {
-      if (!p.get(k)) return;
-      document.querySelectorAll('.f-' + k).forEach(function (el) { el.value = p.get(k); });
-    });
-  } catch (e) {}
+  /* Lead source, shown as one readable line in the lead email:
+     "Google Ads (campaign name)" for ad clicks, "Website" otherwise. */
+  function leadSource() {
+    try {
+      var p = new URLSearchParams(location.search);
+      var campaign = p.get('utm_campaign');
+      if (p.get('gclid')) return 'Google Ads' + (campaign ? ' (' + campaign + ')' : '');
+      if (p.get('utm_source')) return p.get('utm_source') + (campaign ? ' (' + campaign + ')' : '');
+    } catch (e) {}
+    return 'Website';
+  }
 
   /* Lead forms (hero + bottom) share one handler */
   document.querySelectorAll('form.lead-form').forEach(function (form) {
@@ -1311,8 +1308,9 @@ var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
       btnTxt.textContent = 'Sending…';
 
       var data = new FormData(form);
-      data.append('subject', 'New Inspection Repair Lead (Landing Page)');
-      data.append('from_name', 'Inspection Repairs Landing Page');
+      data.set('subject', 'New Repair Estimate Request — ' + form.name.value.trim());
+      data.set('from_name', 'Certified Property Services Website');
+      data.set('Lead Source', leadSource());
 
       fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
         .then(function (r) { return r.json().catch(function () { return { success: r.ok }; }); })

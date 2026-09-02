@@ -70,7 +70,8 @@ HTML for maximum speed and SEO.
    client's published address is `njeliteco@gmail.com`) and paste it into
    **both** hidden inputs `<input name="access_key" class="f-access">`
    (hero form + bottom form). Forms post natively even without JS once set.
-   Leads arrive with `gclid` / `utm_source` / `utm_campaign` auto-attached.
+   Each lead email carries a readable "Lead Source" line — "Google Ads
+   (campaign name)" for ad clicks, "Website" otherwise.
 3. **Google Ads conversions — BOTH actions.** Create **Form lead** (fires on
    `thanks.html`) and **Phone click** conversion actions; replace
    `AW-XXXXXXXXXX` + labels in `index.html` and `thanks.html` and uncomment
