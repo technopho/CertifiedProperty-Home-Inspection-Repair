@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Update <loc> to the final deployed URL before launch -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://certifiedpropertyservicesllc.com/home-inspection-repairs/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <loc>https://homeinspection.certifiedpropertyservicesllc.com/</loc>
+    <lastmod>2026-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
