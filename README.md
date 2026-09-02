@@ -3,7 +3,7 @@
 **Built by:** TechnoPHO LLC
 
 High-converting Google Ads landing page for home inspection repair services in
-South Jersey & the Philadelphia metro. UI matches the approved design direction
+South Jersey & the tri-state area. UI matches the approved design direction
 (charcoal ink + burnt orange + cream, Archivo/Barlow) — rebuilt as pure static
 HTML for maximum speed and SEO.
 
@@ -45,8 +45,8 @@ HTML for maximum speed and SEO.
   Kisha M. (Google — patio/fence craftsmanship).
 - **"Fully insured"** appears on the client's own Facebook marketing flyers;
   "12+ years / 500+ projects / 99%" are the client's own site claims.
-- **Philadelphia metro** coverage is supported by a real Networx review from
-  Upper Darby, PA.
+- **Service area**: client confirmed they do NOT serve Philadelphia — copy says "South Jersey & the tri-state area". (A Networx review exists from
+  Upper Darby, PA, but per the client philly jobs are declined.)
 
 ### Image provenance
 
