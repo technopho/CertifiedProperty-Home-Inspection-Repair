@@ -108,7 +108,7 @@ replace Web3Forms if you prefer.)
    and submit `sitemap.xml` in Google Search Console.
 
 **GitHub:** repo initialized locally with remote
-`git@github.com:technopho/cps-inspection-repairs-landing.git` (SSH, authenticates
+`git@github.com:technopho/CertifiedProperty-Home-Inspection-Repair.git` (SSH, authenticates
 as `technopho` on this Mac). Create the empty repo under the technopho account
 (no README/gitignore), then `git push -u origin main`.
 
