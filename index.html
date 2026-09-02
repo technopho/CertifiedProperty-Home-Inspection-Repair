@@ -6,7 +6,7 @@
 
 <!-- ===================== PRIMARY SEO ===================== -->
 <title>Home Inspection Repairs in South Jersey, NJ | Certified Property Services</title>
-<meta name="description" content="Failed inspection items? One licensed crew fixes the whole punch list — structural, drainage, concrete &amp; exterior — before your closing date. (856) 516-1347.">
+<meta name="description" content="Failed inspection items? One licensed crew fixes the whole punch list: structural, drainage, concrete &amp; exterior, all before your closing date. (856) 516-1347.">
 <!-- UPDATE before launch: set to the final deployed URL -->
 <link rel="canonical" href="https://certifiedpropertyservicesllc.com/home-inspection-repairs/">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -14,7 +14,7 @@
 
 <!-- Open Graph / social -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Home Inspection Repairs — Fixed Before Your Closing Date">
+<meta property="og:title" content="Home Inspection Repairs, Fixed Before Your Closing Date">
 <meta property="og:description" content="Licensed home inspection repair contractor serving South Jersey &amp; the Philadelphia metro. Structural, drainage, concrete and exterior repairs with re-inspection-ready documentation. Free itemized estimate.">
 <meta property="og:url" content="https://certifiedpropertyservicesllc.com/home-inspection-repairs/">
 <meta property="og:image" content="https://certifiedpropertyservicesllc.com/home-inspection-repairs/assets/img/og-image.jpg">
@@ -47,7 +47,7 @@
 
   // REQUIRED: phone-click conversion (create a "Phone click" conversion action
   // in Google Ads, then replace PHONE_CONVERSION_LABEL). Calls are likely the
-  // majority conversion for this service — do not launch with form-only tracking.
+  // majority conversion for this service, do not launch with form-only tracking.
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="tel:"]');
     if (a) gtag('event', 'conversion', { 'send_to': 'AW-XXXXXXXXXX/PHONE_CONVERSION_LABEL' });
@@ -128,7 +128,7 @@
   --ink-card:#221B16;      /* card surface on ink */
   --ink-border:#332A23;    /* borders on ink */
   --orange:#DF5200;        /* display accent (large text, icons) */
-  --orange-btn:#C94A00;    /* button bg — 4.7:1 with white */
+  --orange-btn:#C94A00;    /* button bg, 4.7:1 with white */
   --orange-deep:#B84400;   /* hover */
   --orange-soft:#FBEDE2;   /* pale orange tint */
   --card:#FFFFFF;
@@ -172,7 +172,7 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:96p
 }
 body{
   font-family:var(--font-body);color:var(--fg);background:var(--bg);
-  line-height:1.6;font-size:16.5px;
+  line-height:1.6;font-size:16.5px;overflow-x:clip;
 }
 img{max-width:100%;height:auto;display:block}
 a{color:var(--orange-btn)}
@@ -229,9 +229,10 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
 }
 .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
 .brand__mark{
-  width:42px;height:42px;border-radius:9px;background:var(--orange-btn);flex:none;
+  width:42px;height:42px;border-radius:9px;background:#131010;flex:none;
   display:flex;align-items:center;justify-content:center;
 }
+.footer .brand__mark{border:1px solid rgba(255,255,255,.16)}
 .brand__mark img{width:32px;height:auto}
 .brand__t{font-family:var(--font-display);font-weight:800;font-size:15px;line-height:1.15;color:var(--fg);letter-spacing:.01em;text-transform:uppercase}
 .brand__t small{display:block;font-weight:600;font-size:10px;letter-spacing:.22em;color:var(--muted-fg)}
@@ -452,6 +453,11 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
 .chip-city{
   background:var(--card);border:1px solid var(--border);border-radius:999px;
   padding:9px 18px;font-size:14px;font-weight:600;color:var(--fg);
+  transition:border-color .15s ease,background .15s ease,color .15s ease,transform .15s ease,box-shadow .15s ease;
+}
+.chip-city:hover{
+  border-color:var(--orange-btn);background:var(--orange-soft);color:var(--orange-deep);
+  transform:translateY(-2px);box-shadow:0 6px 16px rgba(201,74,0,.16);
 }
 .area-note{margin-top:24px;color:var(--muted-fg);font-size:15px;max-width:640px}
 
@@ -549,6 +555,12 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
 }
 @media (max-width:720px){
   body{font-size:16px}
+  .section{padding:60px 0}
+  .section-head{margin-bottom:36px}
+  .hero__in{padding-top:44px;padding-bottom:56px;gap:40px}
+  .hero__cta .btn{flex:1 1 auto;justify-content:center}
+  .finance__in{padding:44px 24px}
+  .final__in{padding:64px 24px}
   .header__in{gap:10px;padding:0 16px;height:64px}
   .brand__mark{width:38px;height:38px}
   .brand__mark img{width:28px}
@@ -584,7 +596,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
 <!-- ===================== HEADER ===================== -->
 <header class="header" id="top">
   <div class="header__in">
-    <a class="brand" href="#top" aria-label="Certified Property Services LLC — top of page">
+    <a class="brand" href="#top" aria-label="Certified Property Services LLC, top of page">
       <span class="brand__mark"><img src="assets/img/logo-crest-white.png" alt="" width="32" height="29"></span>
       <span class="brand__t">Certified Property<small>Services LLC</small></span>
     </a>
@@ -614,7 +626,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
     <div>
       <span class="eyebrow" style="color:var(--orange)">Home Inspection Repairs · South Jersey &amp; Philadelphia</span>
       <h1>Failed inspection items, <em>fixed before your closing date.</em></h1>
-      <p class="hero__sub">Send us your inspection report and we handle the entire punch list — structural, drainage, concrete, roofing, siding and safety repairs — with <b>documented, re-inspection ready workmanship</b> from a licensed team that has completed 500+ projects.</p>
+      <p class="hero__sub">Send us your inspection report and we handle the entire punch list: structural, drainage, concrete, roofing, siding and safety repairs, with <b>documented, re-inspection ready workmanship</b> from a licensed team that has completed 500+ projects.</p>
       <ul class="hero__checks">
         <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#DF5200" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Inspection compliance guaranteed</li>
         <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#DF5200" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Realtor &amp; closing deadlines met</li>
@@ -642,9 +654,9 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
     <!-- Lead form -->
     <div class="lead" id="estimate">
       <h2>Get your free repair estimate</h2>
-      <p class="lead__sub">Send your inspection report and get a line-by-line quote — typically within 24 hours.</p>
+      <p class="lead__sub">Send your inspection report and get a line-by-line quote, typically within 24 hours.</p>
       <form class="lead-form" method="POST" action="https://api.web3forms.com/submit">
-        <!-- Paste your Web3Forms access key here (see README) — makes the form work even without JS -->
+        <!-- Paste your Web3Forms access key here (see README), makes the form work even without JS -->
         <input type="hidden" name="access_key" class="f-access" value="">
         <div class="field field--hp" aria-hidden="true">
           <label for="f-company">Company</label>
@@ -682,13 +694,13 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
             <option>Deck, porch &amp; railing</option>
             <option>Interior punch list</option>
             <option>Insurance claim damage</option>
-            <option>Multiple items — whole report</option>
+            <option>Multiple items / whole report</option>
             <option>Something else</option>
           </select>
         </div>
         <div class="field">
           <label for="f-msg">Deadline or details <em>(optional)</em></label>
-          <textarea id="f-msg" name="message" placeholder="Closing on the 28th — inspector flagged grading and a cracked walkway."></textarea>
+          <textarea id="f-msg" name="message" placeholder="Closing on the 28th, inspector flagged grading and a cracked walkway."></textarea>
         </div>
         <input type="hidden" name="gclid" class="f-gclid">
         <input type="hidden" name="utm_source" class="f-utm_source">
@@ -751,7 +763,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">What we repair</span>
-      <h2 id="repairs-h">Every item on your inspection report — handled under one contract.</h2>
+      <h2 id="repairs-h">Every item on your inspection report, handled under one contract.</h2>
       <p>From small punch-list fixes to major restorations, our certified team meets inspection requirements with lasting results.</p>
     </div>
     <div class="repairs">
@@ -804,7 +816,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
         <ul><li>Claim-ready scopes</li><li>Photo documentation</li><li>Full restoration</li></ul>
       </article>
     </div>
-    <p class="repairs-note reveal">Don't see your item? We also handle landscaping, artificial turf, decking &amp; pergolas, remodeling and equipment &amp; soil handling — <a href="#estimate">send the report and ask</a>.</p>
+    <p class="repairs-note reveal">Don't see your item? We also handle landscaping, artificial turf, decking &amp; pergolas, remodeling and equipment &amp; soil handling. <a href="#estimate">Send the report and ask</a>.</p>
   </div>
 </section>
 
@@ -824,7 +836,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
       <li class="step reveal">
         <span class="num" aria-hidden="true">02</span>
         <h3>On-site assessment &amp; itemized quote</h3>
-        <p>A certified estimator walks the property, photographs each item and delivers a line-by-line quote — no vague lump sums, no surprise change orders.</p>
+        <p>A certified estimator walks the property, photographs each item and delivers a line-by-line quote. No vague lump sums, no surprise change orders.</p>
       </li>
       <li class="step reveal">
         <span class="num" aria-hidden="true">03</span>
@@ -845,7 +857,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">Recent work</span>
-      <h2 id="results-h">Repairs that pass — and look like they were never a problem.</h2>
+      <h2 id="results-h">Repairs that pass, and look like they were never a problem.</h2>
       <p>The kinds of inspection items our crews close out for homeowners, realtors and investors.</p>
     </div>
     <div class="results">
@@ -856,7 +868,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
         </div>
         <figcaption class="result__body">
           <h3>Deck restored, damaged boards replaced</h3>
-          <p>Unsafe boards replaced, stairs rebuilt and railings brought to height — deck items are among the most common inspection write-ups.</p>
+          <p>Unsafe boards replaced, stairs rebuilt and railings brought to height. Deck items are among the most common inspection write-ups.</p>
         </figcaption>
       </figure>
       <figure class="result reveal">
@@ -866,7 +878,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
         </div>
         <figcaption class="result__body">
           <h3>Downspouts routed underground</h3>
-          <p>Water pooling at the foundation is one of the most-flagged report items — our crew connects downspouts and routes discharge safely away.</p>
+          <p>Water pooling at the foundation is one of the most-flagged report items. Our crew connects downspouts and routes discharge safely away.</p>
         </figcaption>
       </figure>
       <figure class="result reveal">
@@ -876,7 +888,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
         </div>
         <figcaption class="result__body">
           <h3>Grading &amp; front walk corrected</h3>
-          <p>Eroded, negative-grade front yard regraded and the walkway rebuilt — a real before/after from our crew in the Woodbury Heights area.</p>
+          <p>Eroded, negative-grade front yard regraded and the walkway rebuilt. A real before/after from our crew in the Woodbury Heights area.</p>
         </figcaption>
       </figure>
     </div>
@@ -894,7 +906,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
       <article class="hcard reveal">
         <span class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#C94A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
         <h3>Homeowners</h3>
-        <p>Fix what the inspector found, protect your family and keep your home's value — with financing if you need it.</p>
+        <p>Fix what the inspector found, protect your family and keep your home's value, with financing if you need it.</p>
       </article>
       <article class="hcard reveal">
         <span class="ico"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#C94A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
@@ -922,7 +934,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
       <div class="section-head reveal" style="margin-bottom:0">
         <span class="eyebrow">Why Certified Property Services</span>
         <h2 id="why-cps-h">Reliable repairs. Trusted results. No cutting corners.</h2>
-        <p>We understand the importance of fast, high-quality repairs after an inspection. Your home meets safety standards and passes inspection with confidence — and you only manage one point of contact.</p>
+        <p>We understand the importance of fast, high-quality repairs after an inspection. Your home meets safety standards and passes inspection with confidence, and you only manage one point of contact.</p>
       </div>
       <ul class="checklist reveal">
         <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DF5200" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Certified, licensed and insured crews</li>
@@ -955,7 +967,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
     <div class="reveal">
       <span class="eyebrow">Financing</span>
       <h2>Turn your repair list into reality with <em>0% financing</em></h2>
-      <p>Don't let a repair list delay your closing or drain your savings. Approved plans let you complete every required repair now and pay over time — ask about options during your free estimate.</p>
+      <p>Don't let a repair list delay your closing or drain your savings. Approved plans let you complete every required repair now and pay over time. Ask about options during your free estimate.</p>
     </div>
     <a class="btn btn--orange reveal" href="#estimate">Check financing options</a>
   </div>
@@ -1026,7 +1038,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
       <span class="chip-city">Vineland</span>
       <span class="chip-city">Philadelphia metro</span>
     </div>
-    <p class="area-note reveal">Not sure if we cover your town? <a href="tel:+18565161347">Call us</a> — if it's on an inspection report in our area, we can almost certainly get to it. Based at 1257 Glassboro Rd, Woodbury Heights, NJ 08097.</p>
+    <p class="area-note reveal">Not sure if we cover your town? <a href="tel:+18565161347">Call us</a>. If it's on an inspection report in our area, we can almost certainly get to it. Based at 1257 Glassboro Rd, Woodbury Heights, NJ 08097.</p>
   </div>
 </section>
 
@@ -1040,15 +1052,15 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
     <div class="faq reveal">
       <details>
         <summary>What are home inspection repairs?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">They're the fixes an inspector recommends to bring a property up to safety and quality standards — anything from a missing handrail or a grading issue to structural and drainage problems. In a real estate transaction, some become <b>contractually required</b> before closing. We complete them correctly and on time so the deal keeps moving.</p>
+        <p class="ans">They're the fixes an inspector recommends to bring a property up to safety and quality standards: anything from a missing handrail or a grading issue to structural and drainage problems. In a real estate transaction, some become <b>contractually required</b> before closing. We complete them correctly and on time so the deal keeps moving.</p>
       </details>
       <details>
         <summary>Can you quote directly from my inspection report?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">Yes — that's exactly how we work. Send the PDF (or photos of the pages) and we return an <b>itemized, line-by-line quote, typically within 24 hours</b>. You can have us fix everything or only the items your contract requires.</p>
+        <p class="ans">Yes, that's exactly how we work. Send the PDF (or photos of the pages) and we return an <b>itemized, line-by-line quote, typically within 24 hours</b>. You can have us fix everything or only the items your contract requires.</p>
       </details>
       <details>
         <summary>How fast can repairs be completed before closing?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">We offer prompt scheduling built around closing and inspection deadlines. Tell us your date and we work backwards from it — most repair lists can be completed <b>well inside a typical closing window</b>. On a tight timeline, call us at (856) 516-1347.</p>
+        <p class="ans">We offer prompt scheduling built around closing and inspection deadlines. Tell us your date and we work backwards from it. Most repair lists can be completed <b>well inside a typical closing window</b>. On a tight timeline, call us at (856) 516-1347.</p>
       </details>
       <details>
         <summary>What types of issues do you repair?<span class="plus" aria-hidden="true"></span></summary>
@@ -1056,19 +1068,19 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
       </details>
       <details>
         <summary>Do you work directly with realtors or homeowners?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">Both — all the time. We collaborate directly with homeowners, realtors and inspectors, keep everyone updated, and deliver <b>the documentation the transaction needs</b>: itemized invoices, photos and completion summaries ready for the re-inspection or the closing file.</p>
+        <p class="ans">Both, all the time. We collaborate directly with homeowners, realtors and inspectors, keep everyone updated, and deliver <b>the documentation the transaction needs</b>: itemized invoices, photos and completion summaries ready for the re-inspection or the closing file.</p>
       </details>
       <details>
         <summary>Will the repairs pass re-inspection?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">That's the standard we work to: <b>inspection compliance, guaranteed</b>. Repairs are completed to meet the inspection's requirements, and we hand you the paper trail — photos and receipts — so verification is straightforward.</p>
+        <p class="ans">That's the standard we work to: <b>inspection compliance, guaranteed</b>. Repairs are completed to meet the inspection's requirements, and we hand you a paper trail of photos and receipts, so verification is straightforward.</p>
       </details>
       <details>
         <summary>How much do inspection repairs cost?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">It depends entirely on what's flagged — which is why we price <b>line by line from your actual report</b> instead of quoting vague lump sums. You see the cost of every item individually, fix what the contract requires, and skip what it doesn't. The estimate is free and carries no obligation.</p>
+        <p class="ans">It depends entirely on what's flagged, which is why we price <b>line by line from your actual report</b> instead of quoting vague lump sums. You see the cost of every item individually, fix what the contract requires, and skip what it doesn't. The estimate is free and carries no obligation.</p>
       </details>
       <details>
         <summary>Can you repair only some items on the report?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">Absolutely. Because the quote is itemized, you can hand us <b>just the contractually required repairs</b>, just the safety items, or the whole list — your call, with pricing transparent either way.</p>
+        <p class="ans">Absolutely. Because the quote is itemized, you can hand us <b>just the contractually required repairs</b>, just the safety items, or the whole list. Your call, with pricing transparent either way.</p>
       </details>
       <details>
         <summary>Can you handle lender-required (FHA / VA) repairs before closing?<span class="plus" aria-hidden="true"></span></summary>
@@ -1076,11 +1088,11 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
       </details>
       <details>
         <summary>Do you offer financing?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">Yes — <b>0% financing options are available</b> on qualifying projects. If an unexpected repair list landed in the middle of your move, ask about payment options when we prepare your estimate.</p>
+        <p class="ans">Yes, <b>0% financing options are available</b> on qualifying projects. If an unexpected repair list landed in the middle of your move, ask about payment options when we prepare your estimate.</p>
       </details>
       <details>
         <summary>What areas do you serve?<span class="plus" aria-hidden="true"></span></summary>
-        <p class="ans">South Jersey — Gloucester, Camden and Burlington Counties — and the Greater Philadelphia area, from our base in <b>Woodbury Heights, NJ</b>. Not sure about your town? Call and ask.</p>
+        <p class="ans">South Jersey (Gloucester, Camden and Burlington Counties) and the Greater Philadelphia area, from our base in <b>Woodbury Heights, NJ</b>. Not sure about your town? Call and ask.</p>
       </details>
     </div>
     <p class="faq-cta">Still have a question about your specific report? <a href="tel:+18565161347">Call (856) 516-1347</a> and we'll read through it with you.</p>
@@ -1108,7 +1120,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
 
     <div class="lead reveal">
       <h2>Get your free repair estimate</h2>
-      <p class="lead__sub">Send your inspection report and get a line-by-line quote — typically within 24 hours.</p>
+      <p class="lead__sub">Send your inspection report and get a line-by-line quote, typically within 24 hours.</p>
       <form class="lead-form" method="POST" action="https://api.web3forms.com/submit">
         <input type="hidden" name="access_key" class="f-access" value="">
         <div class="field field--hp" aria-hidden="true">
@@ -1147,13 +1159,13 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
             <option>Deck, porch &amp; railing</option>
             <option>Interior punch list</option>
             <option>Insurance claim damage</option>
-            <option>Multiple items — whole report</option>
+            <option>Multiple items / whole report</option>
             <option>Something else</option>
           </select>
         </div>
         <div class="field">
           <label for="f2-msg">Deadline or details <em>(optional)</em></label>
-          <textarea id="f2-msg" name="message" placeholder="Closing on the 28th — inspector flagged grading and a cracked walkway."></textarea>
+          <textarea id="f2-msg" name="message" placeholder="Closing on the 28th, inspector flagged grading and a cracked walkway."></textarea>
         </div>
         <input type="hidden" name="gclid" class="f-gclid">
         <input type="hidden" name="utm_source" class="f-utm_source">
@@ -1245,7 +1257,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
 
 <script>
 /* ============================================================
-   FORM BACKEND — REQUIRED SETUP (see README.md)
+   FORM BACKEND, REQUIRED SETUP (see README.md)
    Create a free Web3Forms access key at https://web3forms.com and
    paste it into BOTH hidden inputs: <input name="access_key" class="f-access">
    (one in the hero form, one in the bottom form).
@@ -1285,13 +1297,13 @@ var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
       var digits = form.phone.value.replace(/\D/g, '');
       if (digits.length < 10) {
         msg.className = 'form-msg err';
-        msg.textContent = "Please double-check your phone number — it's how we send your quote.";
+        msg.textContent = "Please double-check your phone number. It's how we send your quote.";
         return;
       }
       var accessKey = form.querySelector('.f-access').value.trim();
       if (!accessKey && FORM_ENDPOINT.indexOf('web3forms') !== -1) {
         msg.className = 'form-msg err';
-        msg.innerHTML = 'Online form is being set up — please call us directly: <a href="tel:+18565161347">(856) 516-1347</a>';
+        msg.innerHTML = 'Online form is being set up. Please call us directly: <a href="tel:+18565161347">(856) 516-1347</a>';
         return;
       }
 
@@ -1299,7 +1311,7 @@ var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
       btnTxt.textContent = 'Sending…';
 
       var data = new FormData(form);
-      data.append('subject', 'New Inspection Repair Lead — Landing Page');
+      data.append('subject', 'New Inspection Repair Lead (Landing Page)');
       data.append('from_name', 'Inspection Repairs Landing Page');
 
       fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
@@ -1349,7 +1361,7 @@ var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
     {
       "@type": "Question",
       "name": "What are home inspection repairs?",
-      "acceptedAnswer": { "@type": "Answer", "text": "They're the fixes an inspector recommends to bring a property up to safety and quality standards — anything from a missing handrail or a grading issue to structural and drainage problems. In a real estate transaction, some become contractually required before closing. Certified Property Services completes them correctly and on time so the deal keeps moving." }
+      "acceptedAnswer": { "@type": "Answer", "text": "They're the fixes an inspector recommends to bring a property up to safety and quality standards: anything from a missing handrail or a grading issue to structural and drainage problems. In a real estate transaction, some become contractually required before closing. Certified Property Services completes them correctly and on time so the deal keeps moving." }
     },
     {
       "@type": "Question",
@@ -1379,7 +1391,7 @@ var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
     {
       "@type": "Question",
       "name": "How much do inspection repairs cost?",
-      "acceptedAnswer": { "@type": "Answer", "text": "It depends on what's flagged — which is why we price line by line from your actual report instead of quoting lump sums. You see the cost of every item individually, fix what the contract requires, and skip what it doesn't. The estimate is free." }
+      "acceptedAnswer": { "@type": "Answer", "text": "It depends on what's flagged, which is why we price line by line from your actual report instead of quoting lump sums. You see the cost of every item individually, fix what the contract requires, and skip what it doesn't. The estimate is free." }
     },
     {
       "@type": "Question",
@@ -1394,12 +1406,12 @@ var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
     {
       "@type": "Question",
       "name": "Do you offer financing?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes — 0% financing options are available on qualifying projects. Ask about payment options when we prepare your estimate." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes, 0% financing options are available on qualifying projects. Ask about payment options when we prepare your estimate." }
     },
     {
       "@type": "Question",
       "name": "What areas do you serve?",
-      "acceptedAnswer": { "@type": "Answer", "text": "South Jersey — Gloucester, Camden and Burlington Counties — and the Greater Philadelphia area, from our base in Woodbury Heights, NJ." }
+      "acceptedAnswer": { "@type": "Answer", "text": "South Jersey (Gloucester, Camden and Burlington Counties) and the Greater Philadelphia area, from our base in Woodbury Heights, NJ." }
     }
   ]
 }
