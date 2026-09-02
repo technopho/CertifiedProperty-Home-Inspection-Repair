@@ -1,0 +1,13 @@
+# NOTE: robots.txt only works when served from the DOMAIN ROOT.
+# - Standalone deploy (Netlify/Vercel/own domain root): ship this file as-is.
+# - Subdirectory deploy (e.g. certifiedpropertyservicesllc.com/home-inspection-repairs/):
+#   this file does nothing here — instead add the Sitemap line below to the
+#   ROOT site's robots.txt (Yoast/RankMath can edit it) and submit the sitemap
+#   in Google Search Console.
+# thanks.html is excluded from indexing via its own meta robots noindex tag.
+
+User-agent: *
+Allow: /
+
+# Update this to the final deployed URL before launch
+Sitemap: https://certifiedpropertyservicesllc.com/home-inspection-repairs/sitemap.xml
