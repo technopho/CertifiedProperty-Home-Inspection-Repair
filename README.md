@@ -76,8 +76,9 @@ HTML for maximum speed and SEO.
    `thanks.html`) and **Phone click** conversion actions; replace
    `AW-XXXXXXXXXX` + labels in `index.html` and `thanks.html` and uncomment
    the gtag blocks (phone-click listener is already written).
-4. ~~Final URL~~ — DONE: all URLs point to https://homeinspection.certifiedpropertyservicesllc.com/. Schema
-   `url`/`image`/`logo` in `index.html`, plus `sitemap.xml` + `robots.txt`.
+4. ~~Final URL~~ — **DONE**: canonical, OG, schema, sitemap and robots all
+   point to https://homeinspection.certifiedpropertyservicesllc.com/.
+   Submit `sitemap.xml` in Google Search Console once the domain resolves.
 
 ## ⚠️ Confirm with the client
 
