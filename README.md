@@ -27,6 +27,7 @@ HTML for maximum speed and SEO.
 | File | Purpose |
 |---|---|
 | `index.html` | The landing page (2 lead forms: hero + bottom) |
+| `api/lead.js` | Serverless function: validates the form, emails via Resend |
 | `thanks.html` | Post-submit page — Google Ads form conversion fires here |
 | `privacy.html` | Privacy policy (required by Google Ads destination rules) |
 | `assets/img/` | Optimized WebP images (see provenance below) |
@@ -65,13 +66,26 @@ HTML for maximum speed and SEO.
    Improvement Contractor registration number in contractor advertising. It is
    NOT published on any of the client's profiles (checked). Get the `13VH…`
    number and uncomment the prepared line in the footer of `index.html`.
-2. **Form backend (2 minutes).** Create a free access key at
-   [web3forms.com](https://web3forms.com) (confirm the receiving inbox —
-   client's published address is `njeliteco@gmail.com`) and paste it into
-   **both** hidden inputs `<input name="access_key" class="f-access">`
-   (hero form + bottom form). Forms post natively even without JS once set.
-   Each lead email carries a readable "Lead Source" line — "Google Ads
-   (campaign name)" for ad clicks, "Website" otherwise.
+2. **Form backend — Resend env vars.** Both forms post to `/api/lead`
+   (a Vercel serverless function) which emails the lead through
+   [Resend](https://resend.com). In **Vercel → Settings → Environment
+   Variables**, add for all environments:
+
+   | Variable | Example | Notes |
+   |---|---|---|
+   | `RESEND_API_KEY` | `re_xxxxxxxx` | From resend.com → API Keys. Server-side only. |
+   | `LEAD_TO` | `njeliteco@gmail.com, leads@technopho.com` | Where leads go. Comma-separate for several. |
+   | `LEAD_FROM` | `Website Leads <leads@yourdomain.com>` | Must be a **verified domain** in Resend. |
+   | `LEAD_BCC` | `archive@technopho.com` | Optional silent copy. |
+   | `LEAD_SUBJECT` | `New Repair Estimate Request` | Optional prefix; the lead's name is appended. |
+
+   Verify a sending domain in Resend first (Domains → Add → DNS records).
+   Until the vars are set the form shows a friendly "call us" message.
+   Redeploy after adding or changing any variable — they are read at runtime.
+
+   Each lead email is a branded summary with a readable "Lead Source" line —
+   "Google Ads (campaign name)" for ad clicks, "Website" otherwise — and
+   `Reply-To` set to the customer, so replying reaches them directly.
 3. **Google Ads conversions — BOTH actions.** Create **Form lead** (fires on
    `thanks.html`) and **Phone click** conversion actions; replace
    `AW-XXXXXXXXXX` + labels in `index.html` and `thanks.html` and uncomment
@@ -94,10 +108,10 @@ HTML for maximum speed and SEO.
 
 ## Deployment — recommendation: **Vercel** (or Cloudflare Pages)
 
-Both are free, global-CDN, auto-SSL and deploy this folder with zero config.
-Vercel is the simplest if you already use it; Cloudflare Pages has unlimited
-free bandwidth. (Netlify also works and its built-in form handling could
-replace Web3Forms if you prefer.)
+Vercel is what this project uses: free, global CDN, auto-SSL, and it runs
+`api/lead.js` as a serverless function alongside the static page with zero
+config. A pure static host would work for the page but could not run the
+form endpoint.
 
 **Vercel steps:**
 1. Push this repo to GitHub (see below).

@@ -655,9 +655,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
     <div class="lead" id="estimate">
       <h2>Get your free repair estimate</h2>
       <p class="lead__sub">Send your inspection report and get a line-by-line quote, typically within 24 hours.</p>
-      <form class="lead-form" method="POST" action="https://api.web3forms.com/submit">
-        <!-- Paste your Web3Forms access key here (see README), makes the form work even without JS -->
-        <input type="hidden" name="access_key" class="f-access" value="325a18a0-af27-4f55-b90a-ba65a886640a">
+      <form class="lead-form" method="POST" action="/api/lead">
         <div class="field field--hp" aria-hidden="true">
           <label for="f-company">Company</label>
           <input type="text" id="f-company" name="botcheck" tabindex="-1" autocomplete="off">
@@ -702,7 +700,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
           <label for="f-msg">Deadline or details <em>(optional)</em></label>
           <textarea id="f-msg" name="message" placeholder="Closing on the 28th, inspector flagged grading and a cracked walkway."></textarea>
         </div>
-        <input type="hidden" name="subject" value="New Repair Estimate Request — Certified Property Services">
+        <input type="hidden" name="Lead Source" class="f-source" value="Website">
         <button class="btn btn--orange" type="submit"><span class="btn-txt">Get my free estimate</span>
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
@@ -1117,8 +1115,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
     <div class="lead reveal">
       <h2>Get your free repair estimate</h2>
       <p class="lead__sub">Send your inspection report and get a line-by-line quote, typically within 24 hours.</p>
-      <form class="lead-form" method="POST" action="https://api.web3forms.com/submit">
-        <input type="hidden" name="access_key" class="f-access" value="325a18a0-af27-4f55-b90a-ba65a886640a">
+      <form class="lead-form" method="POST" action="/api/lead">
         <div class="field field--hp" aria-hidden="true">
           <label for="f2-company">Company</label>
           <input type="text" id="f2-company" name="botcheck" tabindex="-1" autocomplete="off">
@@ -1163,7 +1160,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
           <label for="f2-msg">Deadline or details <em>(optional)</em></label>
           <textarea id="f2-msg" name="message" placeholder="Closing on the 28th, inspector flagged grading and a cracked walkway."></textarea>
         </div>
-        <input type="hidden" name="subject" value="New Repair Estimate Request — Certified Property Services">
+        <input type="hidden" name="Lead Source" class="f-source" value="Website">
         <button class="btn btn--orange" type="submit"><span class="btn-txt">Get my free estimate</span>
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
@@ -1250,13 +1247,14 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
 
 <script>
 /* ============================================================
-   FORM BACKEND, REQUIRED SETUP (see README.md)
-   Create a free Web3Forms access key at https://web3forms.com and
-   paste it into BOTH hidden inputs: <input name="access_key" class="f-access">
-   (one in the hero form, one in the bottom form).
-   Until configured, the forms show a friendly "call us" fallback.
+   FORM BACKEND (see README.md)
+   Posts to /api/lead, a serverless function that emails the lead
+   through Resend. Configure these in Vercel → Environment Variables:
+     RESEND_API_KEY, LEAD_TO, LEAD_FROM   (optional: LEAD_BCC, LEAD_SUBJECT)
+   Until they are set, the form shows a friendly "call us" message.
+   Works without JavaScript too: the form posts natively to the same URL.
 ============================================================ */
-var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+var FORM_ENDPOINT = '/api/lead';
 
 (function () {
   'use strict';
@@ -1296,33 +1294,37 @@ var FORM_ENDPOINT = 'https://api.web3forms.com/submit';
         msg.textContent = "Please double-check your phone number. It's how we send your quote.";
         return;
       }
-      var accessKey = form.querySelector('.f-access').value.trim();
-      if (!accessKey && FORM_ENDPOINT.indexOf('web3forms') !== -1) {
-        msg.className = 'form-msg err';
-        msg.innerHTML = 'Online form is being set up. Please call us directly: <a href="tel:+18565161347">(856) 516-1347</a>';
-        return;
-      }
-
       btn.disabled = true;
       btnTxt.textContent = 'Sending…';
 
-      var data = new FormData(form);
-      data.set('subject', 'New Repair Estimate Request — ' + form.name.value.trim());
-      data.set('from_name', 'Certified Property Services Website');
-      data.set('Lead Source', leadSource());
+      var data = {};
+      new FormData(form).forEach(function (value, key) { data[key] = value; });
+      data['Lead Source'] = leadSource();
 
-      fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
-        .then(function (r) { return r.json().catch(function () { return { success: r.ok }; }); })
-        .then(function (res) {
-          if (res.success || res.ok) {
-            window.location.href = 'thanks.html';
-          } else { throw new Error('send failed'); }
+      fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(data),
+      })
+        .then(function (r) {
+          return r.json().catch(function () { return { success: r.ok }; })
+            .then(function (res) { return { ok: r.ok, body: res }; });
         })
-        .catch(function () {
+        .then(function (result) {
+          if (result.ok && result.body.success) {
+            window.location.href = 'thanks.html';
+            return;
+          }
+          throw new Error(result.body.message || 'send failed');
+        })
+        .catch(function (err) {
           btn.disabled = false;
           btnTxt.textContent = 'Get my free estimate';
           msg.className = 'form-msg err';
-          msg.innerHTML = 'Something went wrong sending the form. Please call us: <a href="tel:+18565161347">(856) 516-1347</a>';
+          var note = (err && err.message && err.message !== 'send failed' && err.message !== 'Failed to fetch')
+            ? err.message
+            : 'Something went wrong sending the form.';
+          msg.innerHTML = note + ' Please call us: <a href="tel:+18565161347">(856) 516-1347</a>';
         });
     });
   });
