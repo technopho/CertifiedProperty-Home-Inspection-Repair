@@ -1,0 +1,17 @@
+name = "certifiedproperty-home-inspection-repair"
+main = "worker.js"
+compatibility_date = "2026-09-21"
+
+# The site's files are served straight from the repo root.
+# .assetsignore keeps source files (worker, lib, README) out of the public bundle.
+[assets]
+directory = "./"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+# Set RESEND_API_KEY as a SECRET, not here:
+#   npx wrangler secret put RESEND_API_KEY
+# LEAD_TO / LEAD_FROM can live here or in the dashboard (dashboard wins).
+# [vars]
+# LEAD_TO = "njeliteco@gmail.com"
+# LEAD_FROM = "Website Leads <leads@certifiedpropertyservicesllc.com>"

@@ -27,7 +27,10 @@ HTML for maximum speed and SEO.
 | File | Purpose |
 |---|---|
 | `index.html` | The landing page (2 lead forms: hero + bottom) |
-| `api/lead.js` | Serverless function: validates the form, emails via Resend |
+| `lib/lead-core.mjs` | Shared form logic: validation, email building, Resend send |
+| `worker.js` + `wrangler.toml` | Cloudflare Worker: serves the site, handles `/api/lead` |
+| `api/lead.mjs` | Vercel serverless function for the same endpoint |
+| `.assetsignore` | Keeps source files and secrets out of the public asset bundle |
 | `thanks.html` | Post-submit page — Google Ads form conversion fires here |
 | `privacy.html` | Privacy policy (required by Google Ads destination rules) |
 | `assets/img/` | Optimized WebP images (see provenance below) |
@@ -106,22 +109,52 @@ HTML for maximum speed and SEO.
 - **Hours** in schema are from their Google profile (Mon–Sat 8–8); their
   Facebook says "Always open" — confirm which is right.
 
-## Deployment — recommendation: **Vercel** (or Cloudflare Pages)
+## Deployment
 
-Vercel is what this project uses: free, global CDN, auto-SSL, and it runs
-`api/lead.js` as a serverless function alongside the static page with zero
-config. A pure static host would work for the page but could not run the
-form endpoint.
+The page is static, but the lead form needs a server endpoint (`/api/lead`),
+so the host must run code as well as serve files. Both options below do that
+from this same repo, with no build step.
 
-**Vercel steps:**
-1. Push this repo to GitHub (see below).
-2. vercel.com → Add New → Project → Import the GitHub repo.
-3. Framework preset: **Other**. Build command: *(empty)*. Output dir: `./`.
-4. Deploy → add the custom domain, e.g. `repairs.certifiedpropertyservicesllc.com`
-   (CNAME to `cname.vercel-dns.com`), or run it on the main domain as a
-   subdirectory via their WordPress host instead.
-5. After the domain is live, update the canonical/OG/sitemap URLs (blocker #4)
-   and submit `sitemap.xml` in Google Search Console.
+### Cloudflare Workers (current)
+
+`wrangler.toml` defines a Worker (`worker.js`) that serves the site from the
+assets binding and handles `POST /api/lead`. This is what makes runtime
+variables possible: a Worker with **only** static assets cannot have variables
+or secrets, which is why the dashboard greys those panels out.
+
+1. Push to GitHub. If Workers Builds is connected, it redeploys automatically;
+   otherwise run `npx wrangler deploy`.
+2. Add the secret (never commit it):
+   `npx wrangler secret put RESEND_API_KEY` — or dashboard →
+   Settings → Variables and Secrets → **Secret**.
+3. Add plain variables there too: `LEAD_TO`, `LEAD_FROM`
+   (optional `LEAD_BCC`, `LEAD_SUBJECT`).
+4. Custom domain: Worker → Settings → Domains & Routes → Add custom domain →
+   `homeinspectionrepairs.certifiedpropertyservicesllc.com`. Cloudflare creates
+   the DNS record and certificate automatically.
+
+Local development:
+
+```bash
+npx wrangler dev --persist-to /tmp/wstate    # http://127.0.0.1:8788
+```
+
+Put test values in `.dev.vars` (gitignored, and excluded from asset upload).
+The `--persist-to` flag keeps Wrangler's state out of the asset directory;
+without it the file watcher reload-loops, because assets are served from `./`.
+
+### Vercel (also supported)
+
+`api/lead.mjs` is the same endpoint for Vercel, sharing `lib/lead-core.mjs`.
+Framework preset **Other**, empty build command, output `./`. Set the same
+environment variables under Settings → Environment Variables.
+
+> **Pick one canonical host.** Running both means the same page answers on two
+> URLs, which splits SEO signals. The `canonical`, `og:url`, schema and
+> `sitemap.xml` currently all point at
+> `https://homeinspection.certifiedpropertyservicesllc.com/`. If Cloudflare
+> becomes the live host, update those to the Cloudflare domain and redirect the
+> old one.
 
 **GitHub:** repo initialized locally with remote
 `git@github.com:technopho/CertifiedProperty-Home-Inspection-Repair.git` (SSH, authenticates

@@ -1259,6 +1259,24 @@ var FORM_ENDPOINT = '/api/lead';
 (function () {
   'use strict';
 
+  var PHONE = '(856) 516-1347';
+
+  /* Show an error, turning any phone number in it into a tap-to-call link.
+     Built with text nodes, so server text is never injected as HTML. */
+  function showError(box, text) {
+    box.className = 'form-msg err';
+    box.textContent = '';
+    text.split(PHONE).forEach(function (part, i, parts) {
+      box.appendChild(document.createTextNode(part));
+      if (i < parts.length - 1) {
+        var link = document.createElement('a');
+        link.href = 'tel:+18565161347';
+        link.textContent = PHONE;
+        box.appendChild(link);
+      }
+    });
+  }
+
   /* Lead source, shown as one readable line in the lead email:
      "Google Ads (campaign name)" for ad clicks, "Website" otherwise. */
   function leadSource() {
@@ -1284,14 +1302,12 @@ var FORM_ENDPOINT = '/api/lead';
 
       if (form.botcheck.value) return; /* honeypot */
       if (!form.name.value.trim() || !form.phone.value.trim()) {
-        msg.className = 'form-msg err';
-        msg.textContent = 'Please add your name and phone number so we can reach you.';
+        showError(msg, 'Please add your name and phone number so we can reach you.');
         return;
       }
       var digits = form.phone.value.replace(/\D/g, '');
       if (digits.length < 10) {
-        msg.className = 'form-msg err';
-        msg.textContent = "Please double-check your phone number. It's how we send your quote.";
+        showError(msg, "Please double-check your phone number. It's how we send your quote.");
         return;
       }
       btn.disabled = true;
@@ -1320,11 +1336,9 @@ var FORM_ENDPOINT = '/api/lead';
         .catch(function (err) {
           btn.disabled = false;
           btnTxt.textContent = 'Get my free estimate';
-          msg.className = 'form-msg err';
-          var note = (err && err.message && err.message !== 'send failed' && err.message !== 'Failed to fetch')
-            ? err.message
-            : 'Something went wrong sending the form.';
-          msg.innerHTML = note + ' Please call us: <a href="tel:+18565161347">(856) 516-1347</a>';
+          var serverNote = err && err.message;
+          var generic = serverNote !== 'send failed' && serverNote !== 'Failed to fetch' && serverNote;
+          showError(msg, generic || 'Something went wrong sending the form. Please call us: ' + PHONE);
         });
     });
   });

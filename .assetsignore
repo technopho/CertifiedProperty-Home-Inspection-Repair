@@ -1,0 +1,24 @@
+# Files that must NOT be served as public static assets.
+# Anything in the project root is public unless listed here.
+.git
+.gitignore
+.assetsignore
+.claude
+.vercel
+.wrangler
+node_modules
+wrangler.toml
+worker.js
+lib
+api
+README.md
+
+# Local secrets, never upload
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+
+.DS_Store
+**/.DS_Store
+*.log
