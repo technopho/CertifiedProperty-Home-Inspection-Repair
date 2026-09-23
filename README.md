@@ -79,6 +79,7 @@ HTML for maximum speed and SEO.
    | `RESEND_API_KEY` | `re_xxxxxxxx` | From resend.com → API Keys. Server-side only. |
    | `LEAD_TO` | `njeliteco@gmail.com, leads@technopho.com` | Where leads go. Comma-separate for several. |
    | `LEAD_FROM` | `Website Leads <leads@yourdomain.com>` | Must be a **verified domain** in Resend. |
+   | `LEAD_PAGE` | `Home Inspection Repairs Landing Page` | Heading in the lead email, so leads from different landing pages are distinguishable. Defaults to this value. |
    | `LEAD_BCC` | `archive@technopho.com` | Optional silent copy. |
    | `LEAD_SUBJECT` | `New Repair Estimate Request` | Optional prefix; the lead's name is appended. |
 
@@ -128,7 +129,7 @@ or secrets, which is why the dashboard greys those panels out.
    `npx wrangler secret put RESEND_API_KEY` — or dashboard →
    Settings → Variables and Secrets → **Secret**.
 3. Add plain variables there too: `LEAD_TO`, `LEAD_FROM`
-   (optional `LEAD_BCC`, `LEAD_SUBJECT`).
+   (optional `LEAD_PAGE`, `LEAD_BCC`, `LEAD_SUBJECT`).
 4. Custom domain: Worker → Settings → Domains & Routes → Add custom domain →
    `homeinspectionrepairs.certifiedpropertyservicesllc.com`. Cloudflare creates
    the DNS record and certificate automatically.

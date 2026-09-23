@@ -14,4 +14,5 @@ run_worker_first = ["/api/*"]
 # LEAD_TO / LEAD_FROM can live here or in the dashboard (dashboard wins).
 # [vars]
 # LEAD_TO = "njeliteco@gmail.com"
-# LEAD_FROM = "Website Leads <leads@certifiedpropertyservicesllc.com>"
+# LEAD_FROM = "Website Leads <leads@technopho.com>"
+# LEAD_PAGE = "Home Inspection Repairs Landing Page"   # heading in the lead email
