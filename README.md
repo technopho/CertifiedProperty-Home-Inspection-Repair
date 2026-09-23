@@ -125,11 +125,19 @@ or secrets, which is why the dashboard greys those panels out.
 
 1. Push to GitHub. If Workers Builds is connected, it redeploys automatically;
    otherwise run `npx wrangler deploy`.
-2. Add the secret (never commit it):
-   `npx wrangler secret put RESEND_API_KEY` — or dashboard →
-   Settings → Variables and Secrets → **Secret**.
-3. Add plain variables there too: `LEAD_TO`, `LEAD_FROM`
-   (optional `LEAD_PAGE`, `LEAD_BCC`, `LEAD_SUBJECT`).
+2. **Add every variable as a Secret, not a plain-text variable.**
+   Dashboard → Settings → Variables and Secrets → Add → type **Secret**,
+   or `npx wrangler secret put NAME`. Needed: `RESEND_API_KEY`, `LEAD_TO`,
+   `LEAD_FROM` (optional `LEAD_PAGE`, `LEAD_BCC`, `LEAD_SUBJECT`).
+
+   > ⚠️ **Why secrets and not plain variables:** every deploy runs
+   > `wrangler deploy`, which treats `wrangler.toml` as the source of truth
+   > for plain-text `[vars]` and **deletes any that were added only in the
+   > dashboard**. Secrets are stored separately and survive deploys. The
+   > alternative — listing them under `[vars]` in `wrangler.toml` — would
+   > publish the client's and your own email addresses in this public repo.
+   > If the form suddenly returns "Online form is being set up" right after
+   > a deploy, this is the cause.
 4. Custom domain: Worker → Settings → Domains & Routes → Add custom domain →
    `homeinspectionrepairs.certifiedpropertyservicesllc.com`. Cloudflare creates
    the DNS record and certificate automatically.
