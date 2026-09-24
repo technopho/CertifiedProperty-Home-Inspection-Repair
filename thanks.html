@@ -8,34 +8,20 @@
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
 
 <!-- ============================================================
-     GOOGLE ADS CONVERSION TRACKING
-     The site tag is live. To count form leads as conversions, create a
-     "Form lead" conversion action (Google Ads -> Goals -> Conversions,
-     category Submit lead form) and paste its label into FORM_CONVERSION_LABEL.
-     This page only loads after a successful submission; the sessionStorage
-     guard stops a refresh or revisit from double-counting.
+     GOOGLE TAG MANAGER (container GTM-MWLGQFCL)
+     All measurement lives in GTM now, not in this page:
+     The lead conversion fires on the landing page at submit-success
+     (event: generate_lead), NOT here, so the customer's phone and email
+     are available for enhanced conversions. This page is the confirmation
+     only; do not add a second conversion trigger for it or leads count twice.
 ================================================================= -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18263829709"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-18263829709');
-
-  var ADS_ID = 'AW-18263829709';
-  var FORM_CONVERSION_LABEL = ''; /* <- paste the form-lead label here */
-  (function () {
-    var key = 'cps_lead_counted';
-    var already = false;
-    try { already = sessionStorage.getItem(key) === '1'; } catch (e) {}
-    if (already) return;
-    try { sessionStorage.setItem(key, '1'); } catch (e) {}
-    gtag('event', 'generate_lead');
-    if (FORM_CONVERSION_LABEL) {
-      gtag('event', 'conversion', { send_to: ADS_ID + '/' + FORM_CONVERSION_LABEL });
-    }
-  })();
-</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MWLGQFCL');</script>
+<!-- End Google Tag Manager -->
 
 <style>
   :root{
@@ -92,6 +78,11 @@
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MWLGQFCL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
   <main class="card">
     <div class="check">
       <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0E7A34" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
@@ -115,5 +106,20 @@
     <br>
     <a class="back" href="./">&larr; Back to the page</a>
   </main>
+
+<script>
+  /* Calls and texts from the confirmation page are high-intent: the visitor
+     has already submitted. Same events as the landing page. */
+  window.dataLayer = window.dataLayer || [];
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="sms:"]');
+    if (!link) return;
+    var href = link.getAttribute('href') || '';
+    dataLayer.push({
+      event: href.indexOf('sms:') === 0 ? 'sms_click' : 'phone_click',
+      link_url: href,
+    });
+  });
+</script>
 </body>
 </html>

@@ -9,10 +9,13 @@ directory = "./"
 binding = "ASSETS"
 run_worker_first = ["/api/*"]
 
-# Set RESEND_API_KEY as a SECRET, not here:
+# RESEND_API_KEY is a SECRET, never put it here:
 #   npx wrangler secret put RESEND_API_KEY
-# LEAD_TO / LEAD_FROM can live here or in the dashboard (dashboard wins).
-# [vars]
-# LEAD_TO = "njeliteco@gmail.com"
-# LEAD_FROM = "Website Leads <leads@technopho.com>"
-# LEAD_PAGE = "Home Inspection Repairs Landing Page"   # heading in the lead email
+#
+# These plain variables must stay listed here. Every deploy runs
+# `wrangler deploy`, which makes this file the source of truth for [vars]
+# and deletes any that exist only in the dashboard. Keep the two in sync.
+[vars]
+LEAD_TO = "certifiedpropertyservicesllc@gmail.com"
+LEAD_FROM = "leads@technopho.com"
+LEAD_PAGE = "Home Inspection Repairs Landing Page"

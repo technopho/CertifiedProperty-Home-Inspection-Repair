@@ -90,21 +90,30 @@ HTML for maximum speed and SEO.
    Each lead email is a branded summary with a readable "Lead Source" line —
    "Google Ads (campaign name)" for ad clicks, "Website" otherwise — and
    `Reply-To` set to the customer, so replying reaches them directly.
-3. **Google Ads conversions.** The site tag `AW-18263829709` is **live** on
-   index, thanks and privacy pages. Two conversion actions still need labels:
+3. **Google Ads conversions — configured in GTM, not in this repo.**
+   Container **GTM-MWLGQFCL** is live on index, thanks and privacy. The pages
+   push these events to `dataLayer`; build the Google Ads conversion tags in
+   GTM triggered on them:
 
-   - **Form lead** — Goals → Conversions → Create → Website, category
-     *Submit lead form*. Copy the label (the part after the slash in
-     `AW-18263829709/AbC…`) into `FORM_CONVERSION_LABEL` in `thanks.html`.
-   - **Phone clicks** — same flow, category *Phone call leads*. Copy its
-     label into `PHONE_CONVERSION_LABEL` in `index.html`.
+   | Event | Fired when | Useful variables |
+   |---|---|---|
+   | `generate_lead` | form submitted successfully, on the landing page | `lead_service`, `user_phone` (E.164), `user_email` (lowercased), `transaction_id` |
+   | `phone_click` | any tap-to-call link, on the landing and thank-you pages | `link_url` |
+   | `sms_click` | the "text the report" link on the thank-you page | `link_url` |
 
-   Until the labels are pasted, both still fire standard events
-   (`generate_lead` on the thank-you page, `phone_click` on every tap-to-call),
-   so nothing is lost — but Google Ads will not count them as conversions and
-   Smart Bidding has nothing to optimise toward. Calls are likely the majority
-   conversion for this service, so do not launch with form-only tracking.
-   A `sessionStorage` guard stops a refresh from double-counting a lead.
+   Set the Google Ads tag's **Transaction ID** to `transaction_id` so a repeat
+   submission of the same lead is de-duplicated. Turn on **enhanced conversions
+   for leads** and map `user_phone` / `user_email` (the privacy policy discloses
+   this sharing — keep that in place).
+
+   > ⚠️ **Never add a conversion trigger to thanks.html.** The lead conversion
+   > already fires on the landing page at submit-success, which is what makes
+   > the customer's phone and email available for enhanced conversions. A tag on
+   > the thank-you page would count every lead twice.
+
+   Known gap: a visitor with JavaScript disabled submits via a native form post,
+   so the lead is emailed but no `generate_lead` fires. Volume is negligible.
+
 4. ~~Final URL~~ — **DONE**: canonical, OG, schema, sitemap and robots all
    point to https://homeinspection.certifiedpropertyservicesllc.com/.
    Submit `sitemap.xml` in Google Search Console once the domain resolves.

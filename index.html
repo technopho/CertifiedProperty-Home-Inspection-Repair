@@ -33,31 +33,21 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/barlow-400-latin.woff2" crossorigin>
 
 <!-- ============================================================
-     GOOGLE ADS (site-wide tag) — live.
-     The form-lead conversion fires on thanks.html.
-     Phone clicks fire a 'phone_click' event below; to count them as a
-     conversion, create a "Phone clicks" conversion action in Google Ads and
-     paste its label into PHONE_CONVERSION_LABEL.
+     GOOGLE TAG MANAGER (container GTM-MWLGQFCL)
+     All measurement lives in GTM now, not in this page:
+       - 'generate_lead'  pushed on successful form submit (both forms),
+                          with lead_service / user_phone / user_email for
+                          enhanced conversions
+       - 'phone_click'    pushed on every tap-to-call link
+     Create tags in GTM triggered on those custom events.
 ================================================================= -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18263829709"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-18263829709');
-
-  /* Track every tap-to-call on the page (header, hero, sticky bar, footer). */
-  var ADS_ID = 'AW-18263829709';
-  var PHONE_CONVERSION_LABEL = ''; /* <- paste the phone-click label here */
-  document.addEventListener('click', function (e) {
-    var link = e.target.closest && e.target.closest('a[href^="tel:"]');
-    if (!link) return;
-    gtag('event', 'phone_click', { link_url: link.getAttribute('href') });
-    if (PHONE_CONVERSION_LABEL) {
-      gtag('event', 'conversion', { send_to: ADS_ID + '/' + PHONE_CONVERSION_LABEL });
-    }
-  });
-</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MWLGQFCL');</script>
+<!-- End Google Tag Manager -->
 
 <!-- ===================== STRUCTURED DATA ===================== -->
 <script type="application/ld+json">
@@ -306,7 +296,7 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
   outline:none;border-color:var(--orange-btn);box-shadow:0 0 0 3.5px rgba(223,82,0,.16);
 }
 .field textarea{resize:vertical;min-height:76px}
-.field--hp{position:absolute;left:-9999px;top:-9999px}
+.field--hp{display:none}
 .lead .btn{width:100%;padding:16px 20px;font-size:16px}
 .lead__note{
   display:flex;gap:7px;align-items:center;justify-content:center;
@@ -585,6 +575,11 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MWLGQFCL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
 
 <!-- ===================== UTILITY BAR ===================== -->
 <div class="ubar">
@@ -661,8 +656,8 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
       <p class="lead__sub">Send your inspection report and get a line-by-line quote, typically within 24 hours.</p>
       <form class="lead-form" method="POST" action="/api/lead">
         <div class="field field--hp" aria-hidden="true">
-          <label for="f-company">Company</label>
-          <input type="text" id="f-company" name="botcheck" tabindex="-1" autocomplete="off">
+          <label for="f-hp">Leave this field empty</label>
+          <input type="text" id="f-hp" name="botcheck" tabindex="-1" autocomplete="off">
         </div>
         <div class="frow">
           <div class="field">
@@ -1121,8 +1116,8 @@ h2{font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-.02em;line-hei
       <p class="lead__sub">Send your inspection report and get a line-by-line quote, typically within 24 hours.</p>
       <form class="lead-form" method="POST" action="/api/lead">
         <div class="field field--hp" aria-hidden="true">
-          <label for="f2-company">Company</label>
-          <input type="text" id="f2-company" name="botcheck" tabindex="-1" autocomplete="off">
+          <label for="f2-hp">Leave this field empty</label>
+          <input type="text" id="f2-hp" name="botcheck" tabindex="-1" autocomplete="off">
         </div>
         <div class="frow">
           <div class="field">
@@ -1265,6 +1260,62 @@ var FORM_ENDPOINT = '/api/lead';
 
   var PHONE = '(856) 516-1347';
 
+  window.dataLayer = window.dataLayer || [];
+
+  /* Tap-to-call / text tracking: header, hero, sticky mobile bar, footer. */
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="sms:"]');
+    if (!link) return;
+    var href = link.getAttribute('href') || '';
+    dataLayer.push({
+      event: href.indexOf('sms:') === 0 ? 'sms_click' : 'phone_click',
+      link_url: href,
+    });
+  });
+
+  /* Lead conversion. Pushed here rather than on the thank-you page so the
+     customer's phone and email are available for enhanced conversions.
+     `done` runs once GTM reports the tags fired, or after a hard timeout, so a
+     blocked, slow or broken container can never strand the visitor. */
+  function trackLead(form, done) {
+    var finished = false;
+    var finish = function () { if (!finished) { finished = true; done(); } };
+    setTimeout(finish, 2000); /* hard ceiling, even if GTM never loads */
+
+    var raw = ((form.elements.phone || {}).value || '').split(/x|ext/i)[0];
+    var digits = raw.replace(/\D/g, '');
+    var e164 = digits.length === 10 ? '+1' + digits
+      : (digits.length === 11 && digits.charAt(0) === '1' ? '+' + digits : '');
+    var email = ((form.elements.email || {}).value || '').trim().toLowerCase();
+
+    var payload = {
+      event: 'generate_lead',
+      lead_service: (form.elements['Repair Type'] || {}).value || '',
+      transaction_id: leadId(), /* lets Google Ads and GA4 drop duplicates */
+      eventCallback: finish,
+      eventTimeout: 1800,
+    };
+    /* Only send identifiers we trust: an empty or guessed value hurts matching. */
+    if (e164) payload.user_phone = e164;
+    if (email) payload.user_email = email;
+
+    dataLayer.push(payload);
+  }
+
+  /* One id per visit, so a repeat submit is recognisable as the same lead. */
+  function leadId() {
+    var key = 'cps_lead_id';
+    try {
+      var existing = sessionStorage.getItem(key);
+      if (existing) return existing;
+      var made = (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+      sessionStorage.setItem(key, made);
+      return made;
+    } catch (e) {
+      return Date.now().toString(36);
+    }
+  }
+
   /* Show an error, turning any phone number in it into a tap-to-call link.
      Built with text nodes, so server text is never injected as HTML. */
   function showError(box, text) {
@@ -1298,6 +1349,7 @@ var FORM_ENDPOINT = '/api/lead';
     var msg = form.querySelector('.form-msg');
     var btn = form.querySelector('button[type="submit"]');
     var btnTxt = btn.querySelector('.btn-txt');
+    var sent = false; /* set once the lead is delivered; blocks re-sends */
 
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
@@ -1305,6 +1357,7 @@ var FORM_ENDPOINT = '/api/lead';
       msg.textContent = '';
 
       if (form.botcheck.value) return; /* honeypot */
+      if (sent) { window.location.href = 'thanks.html'; return; }
       if (!form.name.value.trim() || !form.phone.value.trim()) {
         showError(msg, 'Please add your name and phone number so we can reach you.');
         return;
@@ -1327,23 +1380,42 @@ var FORM_ENDPOINT = '/api/lead';
         body: JSON.stringify(data),
       })
         .then(function (r) {
-          return r.json().catch(function () { return { success: r.ok }; })
+          /* Require an explicit {success:true}. A 2xx with a non-JSON body
+             (proxy, captive portal, edge rule) must not look like a lead. */
+          return r.json().catch(function () { return { success: false }; })
             .then(function (res) { return { ok: r.ok, body: res }; });
         })
         .then(function (result) {
-          if (result.ok && result.body.success) {
-            window.location.href = 'thanks.html';
-            return;
+          if (!(result.ok && result.body.success)) {
+            var err = new Error('send failed');
+            err.serverMessage = result.body.message; /* safe to show the visitor */
+            throw err;
           }
-          throw new Error(result.body.message || 'send failed');
+          /* The lead is already emailed at this point, so nothing below may
+             stop the visitor reaching the thank-you page. */
+          sent = true;
+          var go = function () { window.location.href = 'thanks.html'; };
+          try { trackLead(form, go); } catch (e) { go(); }
         })
         .catch(function (err) {
+          if (sent) return; /* a tracking error is not a send failure */
           btn.disabled = false;
           btnTxt.textContent = 'Get my free estimate';
-          var serverNote = err && err.message;
-          var generic = serverNote !== 'send failed' && serverNote !== 'Failed to fetch' && serverNote;
-          showError(msg, generic || 'Something went wrong sending the form. Please call us: ' + PHONE);
+          /* Only ever show our own server text. Browser messages like Safari's
+             "Load failed" are replaced with the friendly call-us fallback. */
+          showError(msg, (err && err.serverMessage)
+            || 'Something went wrong sending the form. Please call us: ' + PHONE);
         });
+    });
+  });
+
+  /* Back/forward cache restores the page mid-submit, leaving the button
+     disabled and reading "Sending…". Reset it so the form still works. */
+  addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    document.querySelectorAll('form.lead-form').forEach(function (f) {
+      var b = f.querySelector('button[type="submit"]');
+      if (b) { b.disabled = false; b.querySelector('.btn-txt').textContent = 'Get my free estimate'; }
     });
   });
 
