@@ -90,10 +90,21 @@ HTML for maximum speed and SEO.
    Each lead email is a branded summary with a readable "Lead Source" line —
    "Google Ads (campaign name)" for ad clicks, "Website" otherwise — and
    `Reply-To` set to the customer, so replying reaches them directly.
-3. **Google Ads conversions — BOTH actions.** Create **Form lead** (fires on
-   `thanks.html`) and **Phone click** conversion actions; replace
-   `AW-XXXXXXXXXX` + labels in `index.html` and `thanks.html` and uncomment
-   the gtag blocks (phone-click listener is already written).
+3. **Google Ads conversions.** The site tag `AW-18263829709` is **live** on
+   index, thanks and privacy pages. Two conversion actions still need labels:
+
+   - **Form lead** — Goals → Conversions → Create → Website, category
+     *Submit lead form*. Copy the label (the part after the slash in
+     `AW-18263829709/AbC…`) into `FORM_CONVERSION_LABEL` in `thanks.html`.
+   - **Phone clicks** — same flow, category *Phone call leads*. Copy its
+     label into `PHONE_CONVERSION_LABEL` in `index.html`.
+
+   Until the labels are pasted, both still fire standard events
+   (`generate_lead` on the thank-you page, `phone_click` on every tap-to-call),
+   so nothing is lost — but Google Ads will not count them as conversions and
+   Smart Bidding has nothing to optimise toward. Calls are likely the majority
+   conversion for this service, so do not launch with form-only tracking.
+   A `sessionStorage` guard stops a refresh from double-counting a lead.
 4. ~~Final URL~~ — **DONE**: canonical, OG, schema, sitemap and robots all
    point to https://homeinspection.certifiedpropertyservicesllc.com/.
    Submit `sitemap.xml` in Google Search Console once the domain resolves.

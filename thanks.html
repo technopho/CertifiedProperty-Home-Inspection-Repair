@@ -8,24 +8,34 @@
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
 
 <!-- ============================================================
-     GOOGLE ADS CONVERSION TRACKING, REQUIRED SETUP
-     1. Replace AW-XXXXXXXXXX with your Google Ads conversion ID.
-     2. Replace CONVERSION_LABEL with your form-lead conversion label.
-     3. Uncomment both blocks below.
-     This page only loads AFTER a successful form submission.
-     Note: a refresh or revisit re-fires the event; if that matters,
-     guard with sessionStorage or pass a transaction_id.
+     GOOGLE ADS CONVERSION TRACKING
+     The site tag is live. To count form leads as conversions, create a
+     "Form lead" conversion action (Google Ads -> Goals -> Conversions,
+     category Submit lead form) and paste its label into FORM_CONVERSION_LABEL.
+     This page only loads after a successful submission; the sessionStorage
+     guard stops a refresh or revisit from double-counting.
 ================================================================= -->
-<!--
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-XXXXXXXXXX"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18263829709"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'AW-XXXXXXXXXX');
-  gtag('event', 'conversion', {'send_to': 'AW-XXXXXXXXXX/CONVERSION_LABEL'});
+  gtag('config', 'AW-18263829709');
+
+  var ADS_ID = 'AW-18263829709';
+  var FORM_CONVERSION_LABEL = ''; /* <- paste the form-lead label here */
+  (function () {
+    var key = 'cps_lead_counted';
+    var already = false;
+    try { already = sessionStorage.getItem(key) === '1'; } catch (e) {}
+    if (already) return;
+    try { sessionStorage.setItem(key, '1'); } catch (e) {}
+    gtag('event', 'generate_lead');
+    if (FORM_CONVERSION_LABEL) {
+      gtag('event', 'conversion', { send_to: ADS_ID + '/' + FORM_CONVERSION_LABEL });
+    }
+  })();
 </script>
--->
 
 <style>
   :root{

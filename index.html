@@ -33,27 +33,31 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/barlow-400-latin.woff2" crossorigin>
 
 <!-- ============================================================
-     GOOGLE ADS / ANALYTICS (site-wide tag)
-     Replace AW-XXXXXXXXXX with your Google Ads ID and uncomment.
-     The form-lead conversion event fires on thanks.html.
+     GOOGLE ADS (site-wide tag) — live.
+     The form-lead conversion fires on thanks.html.
+     Phone clicks fire a 'phone_click' event below; to count them as a
+     conversion, create a "Phone clicks" conversion action in Google Ads and
+     paste its label into PHONE_CONVERSION_LABEL.
 ================================================================= -->
-<!--
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-XXXXXXXXXX"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18263829709"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'AW-XXXXXXXXXX');
+  gtag('config', 'AW-18263829709');
 
-  // REQUIRED: phone-click conversion (create a "Phone click" conversion action
-  // in Google Ads, then replace PHONE_CONVERSION_LABEL). Calls are likely the
-  // majority conversion for this service, do not launch with form-only tracking.
+  /* Track every tap-to-call on the page (header, hero, sticky bar, footer). */
+  var ADS_ID = 'AW-18263829709';
+  var PHONE_CONVERSION_LABEL = ''; /* <- paste the phone-click label here */
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href^="tel:"]');
-    if (a) gtag('event', 'conversion', { 'send_to': 'AW-XXXXXXXXXX/PHONE_CONVERSION_LABEL' });
+    var link = e.target.closest && e.target.closest('a[href^="tel:"]');
+    if (!link) return;
+    gtag('event', 'phone_click', { link_url: link.getAttribute('href') });
+    if (PHONE_CONVERSION_LABEL) {
+      gtag('event', 'conversion', { send_to: ADS_ID + '/' + PHONE_CONVERSION_LABEL });
+    }
   });
 </script>
--->
 
 <!-- ===================== STRUCTURED DATA ===================== -->
 <script type="application/ld+json">
