@@ -69,10 +69,12 @@ HTML for maximum speed and SEO.
    Improvement Contractor registration number in contractor advertising. It is
    NOT published on any of the client's profiles (checked). Get the `13VH…`
    number and uncomment the prepared line in the footer of `index.html`.
-2. **Form backend — Resend env vars.** Both forms post to `/api/lead`
-   (a Vercel serverless function) which emails the lead through
-   [Resend](https://resend.com). In **Vercel → Settings → Environment
-   Variables**, add for all environments:
+2. **Form backend — Resend config.** ✅ *Done on Cloudflare.* Both forms post
+   to `/api/lead`, handled by `worker.js` on Cloudflare (or `api/lead.mjs` on
+   Vercel), which emails the lead through [Resend](https://resend.com).
+   `RESEND_API_KEY` is a Cloudflare **Secret**; `LEAD_TO` / `LEAD_FROM` /
+   `LEAD_PAGE` live in `wrangler.toml` under `[vars]` (see Deployment for why).
+   On Vercel these are all Environment Variables instead:
 
    | Variable | Example | Notes |
    |---|---|---|
@@ -90,7 +92,25 @@ HTML for maximum speed and SEO.
    Each lead email is a branded summary with a readable "Lead Source" line —
    "Google Ads (campaign name)" for ad clicks, "Website" otherwise — and
    `Reply-To` set to the customer, so replying reaches them directly.
-3. **Google Ads conversions — configured in GTM, not in this repo.**
+3. **Google Ads conversions — the GTM container is EMPTY. Nothing reaches
+   Google Ads until you build the tags inside it.**
+
+   > 🚨 Verified by fetching `gtm.js?id=GTM-MWLGQFCL`: `"tags":[]`,
+   > `"predicates":[]`, and no `AW-` id anywhere in the container. The page
+   > pushes its events correctly, but they land nowhere. Point ads at this
+   > build and every click is billed while Ads records **zero** conversions —
+   > and because the old `AW-18263829709` site tag was removed, the `_gcl_aw`
+   > attribution cookie and remarketing collection are gone too. Build these
+   > three tags in GTM first, then confirm with GTM Preview that a real submit
+   > sends a request to `googleads.g.doubleclick.net`:
+   >
+   > 1. **Google Tag / Conversion Linker** for `AW-18263829709`, trigger All Pages.
+   > 2. **Google Ads Conversion Tracking** — Form lead label, trigger Custom
+   >    Event `generate_lead`, enhanced conversions mapped to `user_phone` /
+   >    `user_email`, Transaction ID set to `transaction_id`.
+   > 3. **Google Ads Conversion Tracking** — Phone clicks label, trigger Custom
+   >    Event `phone_click`.
+
    Container **GTM-MWLGQFCL** is live on index, thanks and privacy. The pages
    push these events to `dataLayer`; build the Google Ads conversion tags in
    GTM triggered on them:
@@ -145,19 +165,23 @@ or secrets, which is why the dashboard greys those panels out.
 
 1. Push to GitHub. If Workers Builds is connected, it redeploys automatically;
    otherwise run `npx wrangler deploy`.
-2. **Add every variable as a Secret, not a plain-text variable.**
-   Dashboard → Settings → Variables and Secrets → Add → type **Secret**,
-   or `npx wrangler secret put NAME`. Needed: `RESEND_API_KEY`, `LEAD_TO`,
-   `LEAD_FROM` (optional `LEAD_PAGE`, `LEAD_BCC`, `LEAD_SUBJECT`).
+2. **Where each setting lives — do not mix the two.**
 
-   > ⚠️ **Why secrets and not plain variables:** every deploy runs
-   > `wrangler deploy`, which treats `wrangler.toml` as the source of truth
-   > for plain-text `[vars]` and **deletes any that were added only in the
-   > dashboard**. Secrets are stored separately and survive deploys. The
-   > alternative — listing them under `[vars]` in `wrangler.toml` — would
-   > publish the client's and your own email addresses in this public repo.
-   > If the form suddenly returns "Online form is being set up" right after
-   > a deploy, this is the cause.
+   | Setting | Where | Why |
+   |---|---|---|
+   | `RESEND_API_KEY` | **Secret** only (`npx wrangler secret put RESEND_API_KEY`, or dashboard → type Secret) | It is a credential. Secrets are stored encrypted and survive every deploy. |
+   | `LEAD_TO`, `LEAD_FROM`, `LEAD_PAGE` | **`[vars]` in `wrangler.toml`** | Every deploy runs `wrangler deploy`, which makes `wrangler.toml` the source of truth for plain-text vars and **deletes any that exist only in the dashboard**. Keeping them in the file is what stops the form breaking after each push. |
+
+   > ⚠️ **A name must never exist as both a Secret and a `[vars]` entry.** The
+   > duplicate binding either fails the deploy or silently resolves to one of
+   > them, so leads quietly keep going to the old address. To change where
+   > leads go: edit `wrangler.toml`, commit, push.
+
+   > 🔓 These vars put the lead inbox and sending address in this repo. The
+   > repo is public — consider making it private (GitHub → Settings → General
+   > → Change visibility), which is appropriate for client work anyway.
+
+3. Redeploy after changing anything above.
 4. Custom domain: Worker → Settings → Domains & Routes → Add custom domain →
    `homeinspectionrepairs.certifiedpropertyservicesllc.com`. Cloudflare creates
    the DNS record and certificate automatically.
