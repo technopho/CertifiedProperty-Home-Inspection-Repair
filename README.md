@@ -65,10 +65,10 @@ HTML for maximum speed and SEO.
 
 ## 🚫 Launch blockers (do these before spending ad money)
 
-1. **NJ HIC number.** NJ law (N.J.A.C. 13:45A-16.2) requires the Home
-   Improvement Contractor registration number in contractor advertising. It is
-   NOT published on any of the client's profiles (checked). Get the `13VH…`
-   number and uncomment the prepared line in the footer of `index.html`.
+1. ~~**NJ HIC number**~~ — **DONE**: `NJ HIC #13VH13784400 · Licensed & Fully
+   Insured` is displayed in the footer, satisfying N.J.A.C. 13:45A-16.2 for
+   contractor advertising. (Client-supplied; not published on any of their
+   own profiles.)
 2. **Form backend — Resend config.** ✅ *Done on Cloudflare.* Both forms post
    to `/api/lead`, handled by `worker.js` on Cloudflare (or `api/lead.mjs` on
    Vercel), which emails the lead through [Resend](https://resend.com).
