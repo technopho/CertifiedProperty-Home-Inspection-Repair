@@ -12,6 +12,11 @@ run_worker_first = ["/api/*"]
 # RESEND_API_KEY is a SECRET, never put it here:
 #   npx wrangler secret put RESEND_API_KEY
 #
+# Optional, to also store every lead in the CPS dashboard. Both are SECRETS,
+# the URL too, so they survive every deploy; never add them to [vars]:
+#   npx wrangler secret put CRM_INGEST_URL     (https://crm.certifiedpropertyservicesllc.com/api/ingest/lead)
+#   npx wrangler secret put CRM_INGEST_TOKEN   (the dashboard's LEAD_INGEST_TOKEN)
+#
 # These plain variables must stay listed here. Every deploy runs
 # `wrangler deploy`, which makes this file the source of truth for [vars]
 # and deletes any that exist only in the dashboard. Keep the two in sync.

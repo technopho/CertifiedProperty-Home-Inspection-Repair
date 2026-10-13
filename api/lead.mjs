@@ -4,9 +4,10 @@
  *
  * Environment variables (Vercel -> Settings -> Environment Variables):
  *   RESEND_API_KEY, LEAD_TO, LEAD_FROM   (optional: LEAD_BCC, LEAD_SUBJECT)
+ *   optional, to also store every lead in the CPS dashboard: CRM_INGEST_URL, CRM_INGEST_TOKEN
  */
 
-import { processLead } from '../lib/lead-core.mjs';
+import { leadMeta, processLead } from '../lib/lead-core.mjs';
 
 export default async function handler(req, res) {
   const wantsJson = String(req.headers['content-type'] || '').includes('application/json');
@@ -19,7 +20,8 @@ export default async function handler(req, res) {
   }
 
   const body = req.body && typeof req.body === 'object' ? req.body : {};
-  const result = await processLead(body, process.env);
+  const meta = leadMeta(req.headers.referer, req.headers.cookie);
+  const result = await processLead(body, process.env, meta);
 
   if (wantsJson) {
     return res

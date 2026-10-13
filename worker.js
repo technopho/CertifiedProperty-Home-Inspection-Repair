@@ -8,11 +8,15 @@
  *   Secret:    RESEND_API_KEY
  *   Variables: LEAD_TO, LEAD_FROM   (optional: LEAD_BCC, LEAD_SUBJECT)
  *
+ * Optional, to also store every lead in the CPS dashboard (both Secrets, the
+ * URL too, so a deploy never wipes it; nothing changes until both are set):
+ *   Secrets:   CRM_INGEST_URL, CRM_INGEST_TOKEN
+ *
  * Set them in Workers & Pages -> the Worker -> Settings -> Variables and Secrets,
  * or with: npx wrangler secret put RESEND_API_KEY
  */
 
-import { processLead } from './lib/lead-core.mjs';
+import { leadMeta, processLead } from './lib/lead-core.mjs';
 
 async function readBody(request) {
   const type = request.headers.get('content-type') || '';
@@ -35,7 +39,9 @@ export default {
       }
 
       const { body, wantsJson } = await readBody(request);
-      const result = await processLead(body, env);
+      // Ad attribution (Referer params + ad cookies) for the dashboard.
+      const meta = leadMeta(request.headers.get('referer'), request.headers.get('cookie'));
+      const result = await processLead(body, env, meta);
 
       if (wantsJson) {
         return Response.json(
